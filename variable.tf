@@ -5,11 +5,20 @@ variable "aws_region" {
 }
 
 # VPC module variables
-variable "image_id" {
-  type = string
-}
 
 variable "availability_zone " {
   type    = string
   default = ["us-east-1"]
+}
+
+variable "name" {
+  description = "Name to be used on EC2 instance created"
+  type        = string
+  default     = ""
+}
+
+variable "ami" {
+  description = "ID of AMI to use for the instance"
+  type        = string
+  default     = ""
 }
