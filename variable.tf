@@ -5,7 +5,7 @@ variable "aws_region" {
 # VPC module variables
 variable "availability_zone" {
   type    = string
-  default = ["us-east-1c"]
+  region = "us-east-1c"
 }
 variable "aws_instance" {
   description = "aws to be used on EC2 instance created"
