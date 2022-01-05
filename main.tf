@@ -1,31 +1,10 @@
 provider "aws" {
   region = "${var.aws_region}"
 }
-
-# Resources
-
-resource "aws_route53_zone" "public" {
-  name = "domain.com"
-}
-
-resource "atlas_artifact" "bastion" {
-  name = "example-hashicorp-org/bastion"
-  type = "aws.ami"
-}
-
-resource "atlas_artifact" "beacon" {
-  name = "example-hashicorp-org/beacon"
-  type = "aws.ami"
-}
-
-# Modules
-
 module "vpc" {
   source = "../modules/vpc"
   aws_region = "${var.aws_region}"
   environment = "${var.environment}"
-  public_dns_zone = "${aws_route53_zone.public.zone_id}"
-
   vpc_cidr = "${var.vpc_cidr}"
 
   private_subnet_1 = "${var.private_subnet_1}"
@@ -35,14 +14,11 @@ module "vpc" {
   dmz_subnet_1 = "${var.dmz_subnet_1}"
   dmz_subnet_2 = "${var.dmz_subnet_2}"
   dmz_subnet_3 = "${var.dmz_subnet_3}"
-
-  bastion_ami = "${atlas_artifact.bastion.metadata_full.region-us-west-2}"
 }
-
 resource "aws_security_group" "beacon" {
   name = "beacon"
   description = "Allow web traffic from the internet"
-  vpc_id = "${module.vpc.vpc_id}"
+  vpc_id = "vpc-0b35f76dd9f315be5"
 
   ingress {
     from_port = 80
