@@ -9,7 +9,7 @@ variable "image_id" {
   type = string
 }
 
-variable "availability_zone_names" {
+variable "availability_zone " {
   type    = string
   default = ["us-east-1"]
 }
