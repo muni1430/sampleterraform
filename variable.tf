@@ -11,8 +11,8 @@ variable "availability_zone " {
   default = ["us-east-1"]
 }
 
-variable "name" {
-  description = "Name to be used on EC2 instance created"
+variable "aws_instance" {
+  description = "aws to be used on EC2 instance created"
   type        = string
   default     = ""
 }
