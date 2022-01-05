@@ -47,7 +47,7 @@ resource "aws_security_group" "beacon" {
   ingress {
     from_port = 80
     to_port = 80
-    protocol = "tcp"
+    protocol = "All traffic"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -58,30 +58,13 @@ resource "aws_eip" "beacon" {
 }
 
 resource "aws_instance" "beacon" {
-  ami = "${atlas_artifact.beacon.metadata_full.region-us-west-2}"
+  ami = "ami-04505e74c0741db8d"
   instance_type = "t2.micro"
-  subnet_id = "${module.vpc.subnet_dmz_1}"
-  security_groups = ["${aws_security_group.beacon.id}","${module.vpc.allow_from_bastion_sg}"]
-  iam_instance_profile = "beacon-role"
-
+  subnet_id = "subnet-0991fd811575b0586"
+  security_groups = "sg-0025ec649683001e8"
+ 
   tags {
     Name = "beacon-${var.environment}"
     Environment = "${var.environment}"
   }
-}
-
-resource "aws_route53_record" "beacon" {
-  zone_id = "${aws_route53_zone.public.zone_id}"
-  name = "beacon.domain.com"
-  type = "A"
-  ttl = "300"
-  records = ["${aws_instance.beacon.public_ip}"]
-}
-
-resource "aws_route53_record" "beacon-host" {
-  zone_id = "${aws_route53_zone.public.zone_id}"
-  name = "beacon.us-west-2.domain.com"
-  type = "A"
-  ttl = "300"
-  records = ["${aws_instance.beacon.private_ip}"]
 }
